@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIPARSTORE - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gelap: '#050814', biru: '#007bff', putih: '#ffffff' } } } }
+    </script>
+    <style>body { background: #050814; }</style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-gelap p-6 rounded-xl border border-biru/30 shadow-lg">
+        <h1 class="text-2xl font-bold text-center text-biru mb-6">GIPARSTORE</h1>
+        <div class="mb-4">
+            <label class="block mb-1 text-sm">Username</label>
+            <input type="text" id="user" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-biru" required>
+        </div>
+        <div class="mb-6">
+            <label class="block mb-1 text-sm">Password</label>
+            <input type="password" id="pass" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-biru" required>
+        </div>
+        <button onclick="login()" class="w-full bg-biru hover:bg-blue-700 py-2 rounded font-semibold">MASUK</button>
+        <p id="pesan" class="mt-4 text-center text-red-400 text-sm"></p>
+    </div>
+    <script>
+        function login() {
+            const u = document.getElementById('user').value.trim();
+            const p = document.getElementById('pass').value.trim();
+            if (u === "admin" && p === "gipar123") {
+                localStorage.setItem("gipar_login", "ok");
+                window.location.href = "dashboard.html";
+            } else {
+                document.getElementById('pesan').innerText = "❌ Username atau Password salah!";
+            }
+        }
+    </script>
+</body>
+</html>
