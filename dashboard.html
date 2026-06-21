@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIPARSTORE - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gelap: '#050814', biru: '#007bff', putih: '#ffffff' } } } }
+    </script>
+    <style>body { background: #050814; }</style>
+</head>
+<body class="text-white min-h-screen p-4">
+    <div class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-xl font-bold text-biru">GIPARSTORE | IP TRACKER</h1>
+            <button onclick="keluar()" class="bg-red-600 px-3 py-1 rounded text-sm">Keluar</button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5">
+            <div class="bg-gelap p-5 rounded-xl border border-biru/30">
+                <h3 class="text-lg font-semibold mb-4">🔗 Buat Link Jebakan</h3>
+                <button onclick="buatLink()" class="w-full bg-biru hover:bg-blue-700 py-2 rounded">BUAT LINK BARU</button>
+                <div id="linkHasil" class="mt-4 p-3 bg-gray-800 rounded break-words text-sm text-green-400"></div>
+            </div>
+            <div class="bg-gelap p-5 rounded-xl border border-biru/30">
+                <h3 class="text-lg font-semibold mb-4">📋 Data IP Masuk</h3>
+                <div id="dataIP" class="max-h-64 overflow-y-auto space-y-2 text-sm"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        if (!localStorage.getItem("gipar_login")) window.location.href = "index.html";
+        let daftarIP = JSON.parse(localStorage.getItem("gipar_ip_data")) || [];
+        tampilkanData();
+        function buatLink() {
+            const kode = Math.random().toString(36).slice(2, 9);
+            const link = `${window.location.origin}/track.html?id=${kode}`;
+            document.getElementById("linkHasil").innerText = link;
+        }
+        function tampilkanData() {
+            const kotak = document.getElementById("dataIP");
+            kotak.innerHTML = daftarIP.length === 0 ? "<p class='text-gray-400'>Belum ada yang klik link</p>" : "";
+            daftarIP.forEach((item, i) => {
+                kotak.innerHTML += `<div class="p-2 bg-gray-800 rounded">📌 IP: ${item.ip}<br>⏰ Waktu: ${item.waktu}</div>`;
+            });
+        }
+        function simpanIP(ip) {
+            daftarIP.push({ ip: ip, waktu: new Date().toLocaleString('id-ID') });
+            localStorage.setItem("gipar_ip_data", JSON.stringify(daftarIP));
+            tampilkanData();
+        }
+        function keluar() {
+            localStorage.removeItem("gipar_login");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
